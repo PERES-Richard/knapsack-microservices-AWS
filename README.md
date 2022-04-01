@@ -11,6 +11,6 @@ It will also use modern CI/CD technologies (see the full list [below](#List-of-T
 * TBD  
 
 # RoadMap
-[] Create a simple generator of knapsack problems (list of items + bag size)  
-[] Create a first simple MVP of a naive solver  
-[] TBD  
+- [ ] Create a simple generator of knapsack problems (list of items + bag size)  
+- [ ] Create a first simple MVP of a naive solver  
+- [ ] TBD  

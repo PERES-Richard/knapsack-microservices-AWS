@@ -3,4 +3,4 @@
 - Identification of 'all' different services and modules involved
 ## Changed
 ## Removed
-![](architecture-diagrams/v0.1.png)
+![](doc/architecture-diagrams/v0.1.png)
