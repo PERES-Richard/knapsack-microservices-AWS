@@ -8,9 +8,13 @@ Finally, this project should be able to be used and reproduced following an 'Ope
 It will also use modern CI/CD technologies (see the full list [below](#List-of-Technologies-&-services-used)) to automatically deploy, run and monitor each services/modules of the whole solution.
 
 # List of Technologies & services used
-* TBD  
+* Go (for problem generator)
+* GitHub Actions (for CI/CD)
+* TBD
 
 # RoadMap
-- [ ] Create a simple generator of knapsack problems (list of items + bag size)  
+For a complete roadmap please refer to the [Project Tab](https://github.com/users/PERES-Richard/projects/1/views/1) of this project.
+
+- [x] Create a simple generator of knapsack problems (list of items + bag size)  
 - [ ] Create a first simple MVP of a naive solver  
-- [ ] TBD  
+- [ ] Create a MVP UI to launch a complete flow (generate a new problem, send it to solver and print result)  
