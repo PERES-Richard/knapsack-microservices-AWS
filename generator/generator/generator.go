@@ -7,24 +7,25 @@ import (
 	"sync"
 )
 
-const MAX_DEFAULT_SIZE = 100
+const MAX_DEFAULT_BAG_SIZE = 100
 const MAX_DEFAULT_NB_ITEM = 100
 const MAX_ITEM_VALUE = 100
 
-func GenerateNewKnapSet(knapSet KnapSet, nbItem int) KnapSet {
+func GenerateNewKnapSet(bagSize int, nbItem int) KnapSet {
 	//rand.Seed(time.Now().UnixNano()) TODO
 
-	if knapSet.BagSize == 0 {
-		knapSet.BagSize = rand.Intn(MAX_DEFAULT_SIZE) + 1 // To avoid 0
+	if bagSize == 0 {
+		bagSize = rand.Intn(MAX_DEFAULT_BAG_SIZE) + 1 // To avoid 0
 	}
 
 	if nbItem == 0 {
 		nbItem = rand.Intn(MAX_DEFAULT_NB_ITEM) + 1 // To avoid 0
 	}
 
-	knapSet.Items = generateItems(nbItem, knapSet.BagSize)
-
-	return knapSet
+	return KnapSet{
+		BagSize: bagSize,
+		Items:   generateItems(nbItem, bagSize),
+	}
 }
 
 func generateItems(nbItem int, bagSize int) []Item {
