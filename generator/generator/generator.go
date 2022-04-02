@@ -37,10 +37,10 @@ func generateItems(nbItem int, bagSize int) []Item {
 	var wg sync.WaitGroup
 
 	for itemID := 0; itemID < nbItem; itemID++ {
-		wg.Add(1)
+		wg.Add(1) // wait for 1 more group
 
 		go func(itemID int, bagSize int) {
-			defer wg.Done()
+			defer wg.Done() // notify wg on finish
 			itemList[itemID] = generateItem(itemID, bagSize)
 		}(itemID, bagSize)
 	}

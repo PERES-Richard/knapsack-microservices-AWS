@@ -86,17 +86,24 @@ func Test_generateItems(t *testing.T) {
 			},
 		},
 		{
-			name: "10 bag size & 0 item",
+			name: "10 bag size & MAX_DEFAULT_NB_ITEM item",
 			args: args{
 				bagSize: 10,
-				nbItem:  0,
+				nbItem:  MAX_DEFAULT_NB_ITEM,
 			},
 		},
 		{
-			name: "0 bag size & 10 item",
+			name: "MAX_DEFAULT_BAG_SIZE bag size & 5 item",
 			args: args{
-				bagSize: 0,
-				nbItem:  10,
+				bagSize: MAX_DEFAULT_BAG_SIZE,
+				nbItem:  5,
+			},
+		},
+		{
+			name: "MAX_DEFAULT_BAG_SIZE bag size & MAX_DEFAULT_NB_ITEM item",
+			args: args{
+				bagSize: MAX_DEFAULT_BAG_SIZE,
+				nbItem:  MAX_DEFAULT_NB_ITEM,
 			},
 		},
 		{
