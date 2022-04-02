@@ -164,21 +164,7 @@ func Test_handleArgs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Setup args
-			os.Args = make([]string, 4)
-			if tt.args.bagSize != -1 && tt.args.nbItem != -1 {
-				os.Args[BAG_SIZE_ARG] = strconv.Itoa(tt.args.bagSize)
-				os.Args[NB_ITEM_ARG] = strconv.Itoa(tt.args.nbItem)
-				if tt.args.printBool != "" {
-					os.Args[CONSOLE_PRINT_ARG] = tt.args.printBool
-				}
-				if tt.args.path != "" {
-					os.Args[JSON_PATH_ARG] = tt.args.path
-				}
-			} else {
-				tt.args.bagSize = 0
-				tt.args.nbItem = 0
-				os.Args = []string{"program"}
-			}
+			simulateArgs(&tt.args.bagSize, &tt.args.nbItem, tt.args.printBool, tt.args.path)
 
 			bagSizeGot, nbItemGot, printBool, JSONpath := handleArgs()
 
@@ -210,5 +196,31 @@ func Test_handleArgs(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func simulateArgs(bagSize *int, nbItem *int, printBool string, path string) {
+	os.Args = make([]string, 3)
+
+	if *bagSize != -1 && *nbItem != -1 {
+		os.Args[BAG_SIZE_ARG] = strconv.Itoa(*bagSize)
+		os.Args[NB_ITEM_ARG] = strconv.Itoa(*nbItem)
+	} else {
+		os.Args = []string{"program"}
+		*bagSize = 0
+		*nbItem = 0
+	}
+
+	if printBool != "" {
+		tempArr := make([]string, len(os.Args)+1)
+		copy(tempArr, os.Args)
+		os.Args = tempArr
+		os.Args[CONSOLE_PRINT_ARG] = printBool
+	}
+	if path != "" {
+		tempArr := make([]string, len(os.Args)+1)
+		copy(tempArr, os.Args)
+		os.Args = tempArr
+		os.Args[JSON_PATH_ARG] = path
 	}
 }
