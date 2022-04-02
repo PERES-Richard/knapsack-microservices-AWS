@@ -193,8 +193,10 @@ func Test_handleArgs(t *testing.T) {
 			}
 
 			// Correct print bool
-			if printArg, _ := strconv.ParseBool(tt.args.printBool); printArg != printBool {
-				t.Errorf("handleArgs() print bool = %v, expected %v (%v)", printBool, printArg, tt.args.printBool)
+			if tt.args.printBool != "" {
+				if printArg, _ := strconv.ParseBool(tt.args.printBool); printArg != printBool {
+					t.Errorf("handleArgs() print bool = %v, expected %v (%v)", printBool, printArg, tt.args.printBool)
+				}
 			}
 
 			// Correct path
