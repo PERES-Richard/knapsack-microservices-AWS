@@ -24,7 +24,19 @@ jobs:
 
   run-tests-with-cover:
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      - name: Run Tests
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.17
+
+      - name: Build
         working-directory: "generator"
+        run: go build -v ./...
+
+      - name: Run Tests
+        working-directory: generator
         run: go test -v -cover ./...
