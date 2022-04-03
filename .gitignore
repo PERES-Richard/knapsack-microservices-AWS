@@ -3,3 +3,5 @@
 
 # IntelliJ
 .idea/
+
+**/*.pyc
