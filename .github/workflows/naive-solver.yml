@@ -1,0 +1,28 @@
+name: Naive Solver
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  run-tests:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.10
+
+      - name: Install Pytest
+        working-directory: naive_solver
+        run: pip install -U pytest
+
+      - name: Run Tests
+        working-directory: naive_solver
+        run: python3 -m pytest tests
