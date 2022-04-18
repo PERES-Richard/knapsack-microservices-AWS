@@ -6,8 +6,8 @@ Result = namedtuple('Result', ('totalItems', 'totalvalue', 'sizeLeft', 'itemsLef
 def bestPathFinderRec(currentItems, currentValue, sizeLeft, itemsLeft, nb_thread=0):
     # If the size left is negative then we went 1 step to deep
     if sizeLeft < 0:
-        return currentItems[:-1], currentValue - currentItems[-1]["Value"], sizeLeft + currentItems[-1][
-            "Size"], itemsLeft
+        return currentItems[:-1], currentValue - currentItems[-1]["value"], sizeLeft + currentItems[-1][
+            "size"], itemsLeft
 
     # If there is no size or item left then we are at the end of the path
     if sizeLeft == 0 or len(itemsLeft) == 0:
@@ -28,7 +28,7 @@ def bestPathFinderRec(currentItems, currentValue, sizeLeft, itemsLeft, nb_thread
             newCurrentItems = currentItems[:]
             newCurrentItems.append(itemsLeft[i])
 
-            newItems, newMax, sizeL, itemsL = bestPathFinderRec(newCurrentItems, currentValue + itemsLeft[i]["Value"], sizeLeft - itemsLeft[i]["Size"], itemsLeft[i+1:])
+            newItems, newMax, sizeL, itemsL = bestPathFinderRec(newCurrentItems, currentValue + itemsLeft[i]["value"], sizeLeft - itemsLeft[i]["size"], itemsLeft[i+1:])
 
             # If this combination/path is better than what we already have
             if newMax > totalMax:
@@ -51,8 +51,8 @@ def bestPathFinderRec(currentItems, currentValue, sizeLeft, itemsLeft, nb_thread
                 threadsAvailable = len(itemsLeft) - i
                 nb_thread -= threadsAvailable
 
-            futures[i] = executer.submit(bestPathFinderRec, newCurrentItems, currentValue + itemsLeft[i]["Value"],
-                                                                sizeLeft - itemsLeft[i]["Size"], itemsLeft[i + 1:], threadsAvailable)
+            futures[i] = executer.submit(bestPathFinderRec, newCurrentItems, currentValue + itemsLeft[i]["value"],
+                                                                sizeLeft - itemsLeft[i]["size"], itemsLeft[i + 1:], threadsAvailable)
 
         max_Result = ('', 0)
         for i in range(len(futures)):

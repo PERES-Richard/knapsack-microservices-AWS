@@ -1,23 +1,30 @@
-import solver.solver
-import json
 import time
+
+from sanic import Sanic
+from sanic.response import json, text
+from sanic.log import logger
+
 from solver.solver import bestPathFinder
 
-def main():
-    f = open('../data-5.json', "r")
-    data = json.loads(f.read())
-    f.close()
+app = Sanic(name='naive_solver')
 
 
+@app.route("/solve")
+async def solve_handler(request):
+    logger.info("New solve request for a bagSize of : " + str(request.json["bagSize"]) + " and " + str(len(
+        request.json["items"])) + " items.")
     start = time.time()
-    max, items = bestPathFinder(data["BagSize"], data["Items"])
+    max, items = bestPathFinder(request.json["bagSize"], request.json["items"])
     end = time.time()
+    return json({
+        "max_value": max,
+        "items": items,
+        "duration": end - start
+    })
 
-    print("-------------------")
-    print("Max = ", max)
-    print("With items = ", items)
-    print(f'Time : {end-start:.2f}s\n')
+@app.route("/health")
+async def solve_handler(request):
+    return text("naive solver is healthy")
 
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8081)
