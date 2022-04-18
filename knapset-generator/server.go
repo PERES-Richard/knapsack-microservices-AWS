@@ -5,20 +5,17 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"knapset-generator/generator"
+	"log"
 	"net/http"
+	"strconv"
 )
-
-type GeneratorRequest struct {
-	BagSize       int `json:"bagSize"`
-	NumberOfItems int `json:"numberOfItems"`
-}
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/generate", generateNewBag).Methods("POST")
+	r.HandleFunc("/generate", generateNewBag).Queries("bagSize", "{bagSize:[0-9,]+}", "numberOfItems", "{numberOfItems:[0-9,]+}").Methods("POST")
 
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "healthy")
+		fmt.Fprintf(w, "generator is healthy")
 	}).Methods("GET")
 
 	srv := &http.Server{
@@ -31,15 +28,20 @@ func main() {
 }
 
 func generateNewBag(w http.ResponseWriter, r *http.Request) {
-	var req GeneratorRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-
+	bagSize, err := strconv.Atoi(r.FormValue("bagSize"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	res := generator.GenerateNewKnapSet(req.BagSize, req.BagSize)
+	numberOfItems, err2 := strconv.Atoi(r.FormValue("numberOfItems"))
+	if err2 != nil {
+		http.Error(w, err2.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("New generate request for a bagSize of : %d and %d items.", bagSize, numberOfItems)
+	res := generator.GenerateNewKnapSet(bagSize, numberOfItems)
 
 	json.NewEncoder(w).Encode(res)
 }

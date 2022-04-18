@@ -1,14 +1,26 @@
 # Generator
 
+## Webserver
+
 > TL;DR
 > ```GO
 > go build ./...
 > ```
 > ```GO
-> go run generator
+> go run server.go
 > ```
 
-## How to use
+## CLI
+
+> TL;DR
+> ```GO
+> go build ./...
+> ```
+> ```GO
+> go run cli/cli.go
+> ```
+
+### How to use
 Requires Go installed (tested with ``Go 1.17``)
 
 1. Build generator with `go build ./...`
@@ -18,17 +30,17 @@ Requires Go installed (tested with ``Go 1.17``)
 5. And on a JSON file
 
 > Item value is always a random int between `1` and `100`
-## Args
+### Args
 ```GO
-go run generator A B C D 
+go run cli/cli.go A B C D 
 ```
 - **A**: size of the bag => positive int or 0 for default value (current default value is random between `1` and `100`)
 - **B**: number of items that will be generated => positive int or 0 for default value (current default value is `1` and `100`)
 - **C**: print to console the problem generated => boolean (`true ; t ; 1 ; 0 ; f ; false ; ...`), default is `false`
 - **D**: path to save of the JSON file where the generated problem will be written => string, default is `data.json`, target directory must already exist
 
-## Examples
-### Default
+### Examples
+#### Default
 ```GO
 go run generator
 ```
@@ -38,9 +50,9 @@ Will generate a problem :
 - that will not be printed on the console
 - but saved on a `data.json` file to the current directory
 
-### Default but printed
+#### Default but printed
 ```GO
-go run generator 0 0 true
+go run cli/cli.go 0 0 true
 ```
 Will generate a problem :
 - with a random bag size between `1` and `100`
@@ -48,9 +60,9 @@ Will generate a problem :
 - that **will be** printed on the console
 - but saved on a `data.json` file to the current directory
 
-### Default but saved in a different file
+#### Default but saved in a different file
 ```GO
-go run generator 0 0 true ../custom.json
+go run cli/cli.go 0 0 true ../custom.json
 ```
 Will generate a problem :
 - with a random bag size between `1` and `100`
@@ -58,9 +70,9 @@ Will generate a problem :
 - that will **not** be printed on the console
 - but saved on a `custome.json` file to the **`..` (parent)** directory
 
-### Custom Bag size of 150, with 23 different items, printed on the console and saved in a custom file
+#### Custom Bag size of 150, with 23 different items, printed on the console and saved in a custom file
 ```GO
-go run generator 150 23 true 150-23.json
+go run cli/cli.go 150 23 true 150-23.json
 ```
 Will generate a problem :
 - with a bag size `150`
