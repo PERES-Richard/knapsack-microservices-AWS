@@ -1,7 +1,7 @@
-package main
+package cli
 
 import (
-	"generator/generator"
+	"knapset-generator/generator"
 	"os"
 	"strconv"
 	"testing"

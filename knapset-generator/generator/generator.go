@@ -1,7 +1,7 @@
 package generator
 
 import (
-	. "generator/entities"
+	. "knapset-generator/entities"
 	"log"
 	"math/rand"
 	"sync"

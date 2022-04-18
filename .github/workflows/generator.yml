@@ -19,7 +19,7 @@ jobs:
           go-version: 1.17
 
       - name: Build
-        working-directory: "generator"
+        working-directory: "knapset-generator"
         run: go build -v ./...
 
   run-tests-with-cover:
@@ -34,9 +34,9 @@ jobs:
           go-version: 1.17
 
       - name: Build
-        working-directory: "generator"
+        working-directory: "knapset-generator"
         run: go build -v ./...
 
       - name: Run Tests
-        working-directory: generator
+        working-directory: "knapset-generator"
         run: go test -v -cover ./...

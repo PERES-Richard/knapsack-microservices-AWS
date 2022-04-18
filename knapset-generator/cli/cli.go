@@ -1,11 +1,11 @@
-package main
+package cli
 
 import (
 	"encoding/json"
 	"fmt"
-	"generator/entities"
-	"generator/generator"
 	"io/ioutil"
+	"knapset-generator/entities"
+	"knapset-generator/generator"
 	"log"
 	"os"
 	"strconv"
