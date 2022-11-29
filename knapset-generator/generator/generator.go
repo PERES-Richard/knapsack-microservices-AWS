@@ -11,6 +11,7 @@ import (
 const MAX_DEFAULT_BAG_SIZE = 100
 const MAX_DEFAULT_NB_ITEM = 100
 const MAX_ITEM_VALUE = 100
+const MAX_ITEM_SIZE = 100
 
 func GenerateNewKnapSet(bagSize int, nbItem int) KnapSet {
 	rand.Seed(time.Now().UnixNano())
@@ -42,7 +43,7 @@ func generateItems(nbItem int, bagSize int) []Item {
 
 		go func(itemID int, bagSize int) {
 			defer wg.Done() // notify wg on finish
-			itemList[itemID] = generateItem(itemID, bagSize)
+			itemList[itemID] = generateItem(itemID)
 		}(itemID, bagSize)
 	}
 
@@ -51,14 +52,11 @@ func generateItems(nbItem int, bagSize int) []Item {
 	return itemList
 }
 
-func generateItem(itemID int, maxSize int) Item {
-	if maxSize <= 0 {
-		log.Fatal("Max Size cannot be <= 0")
-	}
+func generateItem(itemID int) Item {
 	rand.Seed(time.Now().UnixNano())
 
 	value := rand.Intn(MAX_ITEM_VALUE) + 1
-	size := rand.Intn(maxSize) + 1
+	size := rand.Intn(MAX_ITEM_VALUE) + 1
 
 	return Item{Id: itemID, Value: value, Size: size}
 }

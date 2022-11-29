@@ -20,7 +20,19 @@
 > go run cli/cli.go
 > ```
 
-### How to use
+## How to use
+> Item value is always a random int between `1` and `100`
+> Item size is always a random int between `1` and `100`
+
+### Webserver
+
+Once the server is started, simply request the ``/generate`` route with ``bagSize`` & ``numberOfItems`` args, example :
+
+```Shell
+curl -X POST "localhost:8080/generate?bagSize=100&numberOfItems=12" -o data.json
+```
+
+### CLI
 Requires Go installed (tested with ``Go 1.17``)
 
 1. Build generator with `go build ./...`
@@ -29,7 +41,6 @@ Requires Go installed (tested with ``Go 1.17``)
 4. Print the result on the console
 5. And on a JSON file
 
-> Item value is always a random int between `1` and `100`
 ### Args
 ```GO
 go run cli/cli.go A B C D 
