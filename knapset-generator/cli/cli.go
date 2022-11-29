@@ -21,7 +21,11 @@ const defaultJSONPath = "data.json"
 func main() {
 	bagSize, nbItem, printToConsole, JSONpath := handleArgs()
 
-	newSet := generator.GenerateNewKnapSet(bagSize, nbItem)
+	newSet, err := generator.GenerateNewKnapSet(bagSize, nbItem)
+
+	if err != nil {
+		fmt.Printf("An error occured during generation : %s.\n", err)
+	}
 
 	saveToJSON(newSet, JSONpath, printToConsole)
 }

@@ -15,7 +15,7 @@ func main() {
 	r.HandleFunc("/generate", generateNewBag).Queries("bagSize", "{bagSize:[0-9,]+}", "numberOfItems", "{numberOfItems:[0-9,]+}").Methods("POST")
 
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "generator is healthy")
+		fmt.Fprintf(w, "generator is healthy\n")
 	}).Methods("GET")
 
 	srv := &http.Server{
@@ -24,7 +24,7 @@ func main() {
 	}
 
 	println("Starting listening on port 8080...")
-	srv.ListenAndServe()
+	log.Fatal(srv.ListenAndServe())
 }
 
 func generateNewBag(w http.ResponseWriter, r *http.Request) {
@@ -40,8 +40,13 @@ func generateNewBag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("New generate request for a bagSize of : %d and %d items.", bagSize, numberOfItems)
-	res := generator.GenerateNewKnapSet(bagSize, numberOfItems)
+	log.Printf("New generate request for a bagSize of : %d and %d items.\n", bagSize, numberOfItems)
+	res, err := generator.GenerateNewKnapSet(bagSize, numberOfItems)
+
+	if err != nil {
+		http.Error(w, "Cannot generate a knapset with args bagSize "+strconv.Itoa(bagSize)+" and numberOfItems "+strconv.Itoa(numberOfItems)+".\n", http.StatusBadRequest)
+		return
+	}
 
 	json.NewEncoder(w).Encode(res)
 }
