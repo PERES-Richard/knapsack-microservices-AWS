@@ -8,13 +8,26 @@ Finally, this project should be able to be used and reproduced following an 'Ope
 It will also use modern CI/CD technologies (see the full list [below](#List-of-Technologies-&-services-used)) to automatically deploy, run and monitor each services/modules of the whole solution.
 
 # List of Technologies & services used
-* Go (for problem generator)
+* Go (for problem generator service)
 * GitHub Actions (for CI/CD)
+* Python (for naive solver service) & Sanic (python web framework)
+* Docker (to containerize services)
 * TBD
 
 # RoadMap
 For a complete roadmap please refer to the [Project Tab](https://github.com/users/PERES-Richard/projects/1/views/1) of this project.
 
 - [x] Create a simple generator of knapsack problems (list of items + bag size)  
-- [ ] Create a first simple MVP of a naive solver  
-- [ ] Create a MVP UI to launch a complete flow (generate a new problem, send it to solver and print result)  
+- [x] Create a first simple MVP of a naive solver  
+- [x] Dockerize Generator and Naive Solver
+- [ ] Create a MVP to launch a complete flow (generate a new problem, send it to solver and print result)
+- [ ] Implement a distributed Message Queue system to connect generator and solvers (Kafka, Red Panda, SQS?)
+- TBD
+
+# How to use
+## Using Docker
+```Shell
+docker-compose up -d
+```
+
+Then you can generate a knapset and solve it with the naive solver #TODO
