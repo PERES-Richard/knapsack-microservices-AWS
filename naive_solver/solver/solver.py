@@ -28,7 +28,8 @@ def bestPathFinderRec(currentItems, currentValue, sizeLeft, itemsLeft, nb_thread
             newCurrentItems = currentItems[:]
             newCurrentItems.append(itemsLeft[i])
 
-            newItems, newMax, sizeL, itemsL = bestPathFinderRec(newCurrentItems, currentValue + itemsLeft[i]["value"], sizeLeft - itemsLeft[i]["size"], itemsLeft[i+1:])
+            newItems, newMax, sizeL, itemsL = bestPathFinderRec(newCurrentItems, currentValue + itemsLeft[i]["value"],
+                                                                sizeLeft - itemsLeft[i]["size"], itemsLeft[i + 1:])
 
             # If this combination/path is better than what we already have
             if newMax > totalMax:
@@ -52,17 +53,18 @@ def bestPathFinderRec(currentItems, currentValue, sizeLeft, itemsLeft, nb_thread
                 nb_thread -= threadsAvailable
 
             futures[i] = executer.submit(bestPathFinderRec, newCurrentItems, currentValue + itemsLeft[i]["value"],
-                                                                sizeLeft - itemsLeft[i]["size"], itemsLeft[i + 1:], threadsAvailable)
+                                         sizeLeft - itemsLeft[i]["size"], itemsLeft[i + 1:], threadsAvailable)
 
         max_Result = ('', 0)
         for i in range(len(futures)):
-            res = futures[i].result() # Wait for the thread to finish
-            if res[1] > max_Result[1]: # Compare total value
+            res = futures[i].result()  # Wait for the thread to finish
+            if res[1] > max_Result[1]:  # Compare total value
                 max_Result = res
 
         return max_Result
 
 
 def bestPathFinder(initialBagSize, initialItems):
-    items, max, _, _ = bestPathFinderRec([], 0, initialBagSize, initialItems, len(initialItems)*4) # nb max threads TBD
+    items, max, _, _ = bestPathFinderRec([], 0, initialBagSize, initialItems,
+                                         len(initialItems) * 4)  # nb max threads TBD
     return max, items

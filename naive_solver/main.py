@@ -4,18 +4,30 @@ from sanic import Sanic
 from sanic.response import json, text
 from sanic.log import logger
 
+from uuid6 import uuid7
+
 from solver.solver import bestPathFinder
 
 app = Sanic(name='naive_solver')
 
 
-@app.route("/solve")
+@app.route("/solve", ["POST"])
 async def solve_handler(request):
-    logger.info("New solve request for a bagSize of : " + str(request.json["bagSize"]) + " and " + str(len(
+    # Creates a UUID for the incominq req
+    uid = uuid7()
+
+    logger.info("New solve request id "+ str(uid) +" for a bagSize of : " + str(request.json["bagSize"]) + " and " + str(len(
         request.json["items"])) + " items.")
+
+    # Record time for benchmark analysis
     start = time.time()
+
+    # Start solving
     max, items = bestPathFinder(request.json["bagSize"], request.json["items"])
+
     end = time.time()
+    logger.info("Request id " + str(uid) + " solved in " + str(end - start) + " seconds.")
+
     return json({
         "max_value": max,
         "items": items,

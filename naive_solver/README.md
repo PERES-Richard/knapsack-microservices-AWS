@@ -4,10 +4,18 @@
 Requires python 3.8 or above :
 
 ```Shell
-pip install sanic
-python 
+pip install sanic uuid6
+python3 main.py
 ```
 
+## Use
+
+Send a formatted JSON knapset at ``/solve`` route, example :
+
+```Shell
+curl -X POST "localhost:8081/solve" -d @data.json
+```
+ 
 ## Algorithm description
 
 Just a naive brute force solver of Knap problem. 
