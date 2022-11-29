@@ -4,13 +4,13 @@
 Requires python 3.8 or above :
 
 ```Shell
-pip install sanic uuid6
+pip3 install -r requirements.txt
 python3 main.py
 ```
 
 ## Use
 
-Send a formatted JSON knapset at ``/solve`` route, example :
+Send a formatted JSON 'knapset' at ``/solve`` route, example :
 
 ```Shell
 curl -X POST "localhost:8081/solve" -d @data.json
