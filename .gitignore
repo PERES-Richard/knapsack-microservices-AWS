@@ -6,3 +6,5 @@
 
 **/*.pyc
 data.json
+knapset-generator/data.json
+knapset-generator/cli/cli

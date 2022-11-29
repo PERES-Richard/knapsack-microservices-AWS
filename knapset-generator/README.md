@@ -1,30 +1,36 @@
 # Generator
+# Run Solver
+## Run with Docker
 
-## Webserver
+Build the image with : ``docker build -t knapset-generator .``  
+Run the image with : ``docker run --name generator -p 8080:8080 -d knapset-generator``
 
-> TL;DR
-> ```GO
-> go build ./...
-> ```
-> ```GO
-> go run server.go
-> ```
-
-## CLI
+## Run locally
+### Run Server
 
 > TL;DR
 > ```GO
-> go build ./...
+> go build -o server .
 > ```
 > ```GO
-> go run cli/cli.go
+> ./server
 > ```
 
-## How to use
+### Run CLI
+
+> TL;DR
+> ```GO
+> go build -o cli ./cli/...
+> ```
+> ```GO
+> ./cli/cli [args]
+> ```
+
+# How to use
 > Item value is always a random int between `1` and `100`
 > Item size is always a random int between `1` and `100`
 
-### Webserver
+## Webserver
 
 Once the server is started, simply request the ``/generate`` route with ``bagSize`` & ``numberOfItems`` args, example :
 
@@ -32,26 +38,25 @@ Once the server is started, simply request the ``/generate`` route with ``bagSiz
 curl -X POST "localhost:8080/generate?bagSize=100&numberOfItems=12" -o data.json
 ```
 
-### CLI
+## CLI
 Requires Go installed (tested with ``Go 1.17``)
 
-1. Build generator with `go build ./...`
-2. Run generator with 0 to 4 [args](#args) (to customize the following behavior)
-3. This will generate a new Knapsack problem (bag size + list of item with a value & size)
-4. Print the result on the console
-5. And on a JSON file
+1. Run generator with 0 to 4 [args](#args) (to customize the following behavior)
+2. This will generate a new Knapsack problem (bag size + list of item with a value & size)
+3. Print the result on the console
+4. And on a JSON file
 
 ### Args
 ```GO
-go run cli/cli.go A B C D 
+./cli/cli A B C D 
 ```
 - **A**: size of the bag => positive int or 0 for default value (current default value is random between `1` and `100`)
 - **B**: number of items that will be generated => positive int or 0 for default value (current default value is `1` and `100`)
 - **C**: print to console the problem generated => boolean (`true ; t ; 1 ; 0 ; f ; false ; ...`), default is `false`
 - **D**: path to save of the JSON file where the generated problem will be written => string, default is `data.json`, target directory must already exist
 
-### Examples
-#### Default
+##### Examples
+###### Default
 ```GO
 go run generator
 ```
@@ -61,7 +66,7 @@ Will generate a problem :
 - that will not be printed on the console
 - but saved on a `data.json` file to the current directory
 
-#### Default but printed
+###### Default but printed
 ```GO
 go run cli/cli.go 0 0 true
 ```
@@ -71,7 +76,7 @@ Will generate a problem :
 - that **will be** printed on the console
 - but saved on a `data.json` file to the current directory
 
-#### Default but saved in a different file
+###### Default but saved in a different file
 ```GO
 go run cli/cli.go 0 0 true ../custom.json
 ```
@@ -81,7 +86,7 @@ Will generate a problem :
 - that will **not** be printed on the console
 - but saved on a `custome.json` file to the **`..` (parent)** directory
 
-#### Custom Bag size of 150, with 23 different items, printed on the console and saved in a custom file
+###### Custom Bag size of 150, with 23 different items, printed on the console and saved in a custom file
 ```GO
 go run cli/cli.go 150 23 true 150-23.json
 ```
