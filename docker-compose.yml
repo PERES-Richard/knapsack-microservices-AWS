@@ -1,10 +1,21 @@
 version: "3.8"
 services:
+
   generator:
     build: ./knapset-generator
+    container_name: generator
     ports:
       - "8080:8080"
+    read_only: true
+    cap_drop:
+      - 'ALL'
+
   naive-solver:
     build: ./naive_solver
+    container_name: solver
     ports:
       - "8081:8081"
+    read_only: false
+    cap_drop:
+      - 'ALL'
+
