@@ -1,14 +1,20 @@
 # Naive Solver
-## Run
+# Run Solver
+## Run with Docker
+
+Build the image with : ``docker build -t naive-solver .``  
+Run the image with : ``docker run --name naive-solver -p 8081:8081 -d naive-solver``
+
+## Run locally
 
 Requires python 3.8 or above :
 
 ```Shell
 pip3 install -r requirements.txt
-python3 main.py
+python3 server.py
 ```
 
-## Use
+# Use Server
 
 Send a formatted JSON 'knapset' at ``/solve`` route, example :
 
@@ -16,7 +22,7 @@ Send a formatted JSON 'knapset' at ``/solve`` route, example :
 curl -X POST "localhost:8081/solve" -d @data.json
 ```
  
-## Algorithm description
+# Algorithm description
 
 Just a naive brute force solver of Knap problem. 
 The program will test every single combination in descending order.  
@@ -44,11 +50,11 @@ C + remaining (B C D)
 D + remaining (null)
 ```
 
-## Multi processing implementation
+# Multi processing implementation
 
 // TODO n*4 threads split into n-1 threads for each first entry if remaining
 
-## Benchmark
+# Benchmark
 // TODO
 
 Without multi threading : 
