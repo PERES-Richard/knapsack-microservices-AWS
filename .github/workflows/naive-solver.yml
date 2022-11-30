@@ -3,8 +3,6 @@ name: Naive Solver
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
 
@@ -25,3 +23,22 @@ jobs:
       - name: Run Tests
         working-directory: naive_solver
         run: python3 -m pytest tests
+
+  build-and-publish-docker-image:
+    runs-on: ubuntu-latest
+    needs: run-tests
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Image
+        run: docker build ./naive_solver --tag ghcr.io/peres-richard/knapsack-microservices-aws/naive-solver:dev
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Docker Image to GHCR
+        run: docker push ghcr.io/peres-richard/knapsack-microservices-aws/naive-solver:dev

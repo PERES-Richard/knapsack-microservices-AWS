@@ -2,7 +2,8 @@ version: "3.8"
 services:
 
   generator:
-    build: ./knapset-generator
+    image: knapset-generator
+    pull_policy: always
     container_name: generator
     ports:
       - "8080:8080"
@@ -11,7 +12,8 @@ services:
       - 'ALL'
 
   naive-solver:
-    build: ./naive_solver
+    image: naive-solver
+    pull_policy: always
     container_name: naive-solver
     ports:
       - "8081:8081"
