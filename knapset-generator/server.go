@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"knapset-generator/generator"
 	"log"
 	"net/http"
@@ -18,9 +19,14 @@ func main() {
 		fmt.Fprintf(w, "generator is healthy\n")
 	}).Methods("GET")
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+
 	srv := &http.Server{
 		Addr:    ":8080",
-		Handler: r,
+		Handler: c.Handler(r),
 	}
 
 	println("Starting listening on port 8080...")

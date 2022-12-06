@@ -4,13 +4,19 @@ from sanic import Sanic
 from sanic.response import json, text
 from sanic.log import logger
 
+from cors import add_cors_headers
+from options import setup_options
+
 from uuid6 import uuid7
 
 from solver.solver import bestPathFinder
 
 app = Sanic(name='naive_solver')
+# Add OPTIONS handlers to any route that is missing it
+app.register_listener(setup_options, "before_server_start")
 
-
+# Fill in CORS headers
+app.register_middleware(add_cors_headers, "response")
 @app.route("/solve", ["POST"])
 async def solve_handler(request):
     # Creates a UUID for the incominq req
