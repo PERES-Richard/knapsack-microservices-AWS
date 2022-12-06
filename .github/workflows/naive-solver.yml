@@ -3,6 +3,13 @@ name: Naive Solver
 on:
   push:
     branches: [ main ]
+    tags: ['v*']
+  release:
+    types: [ published ]
+
+env:
+  REGISTRY: ghcr.io/peres-richard
+  IMAGE_NAME: naive-solver
 
 jobs:
 
@@ -30,9 +37,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build Image
-        run: docker build ./naive_solver --tag ghcr.io/peres-richard/knapsack-microservices-aws/naive-solver:dev
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -40,5 +44,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Docker Image to GHCR
-        run: docker push ghcr.io/peres-richard/knapsack-microservices-aws/naive-solver:dev
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./naive_solver
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

@@ -3,6 +3,7 @@ services:
 
   generator:
     build: ./knapset-generator
+    image: ghcr.io/peres-richard/knapset-generator
     container_name: generator
     ports:
       - "8080:8080"
@@ -12,6 +13,7 @@ services:
 
   naive-solver:
     build: ./naive_solver
+    image: ghcr.io/peres-richard/naive-solver
     container_name: naive-solver
     ports:
       - "8081:8081"
