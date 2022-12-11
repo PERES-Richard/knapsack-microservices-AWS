@@ -20,4 +20,13 @@ services:
     read_only: false
     cap_drop:
       - 'ALL'
+  frontend:
+    build: ./frontend
+    image: ghcr.io/peres-richard/knapset-ui
+    container_name: knapset-ui
+    ports:
+      - "3000:3000"
+#    read_only: false
+    cap_drop:
+      - 'ALL'
 
