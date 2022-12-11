@@ -1,4 +1,11 @@
 # AWS Knapsack Microservices Project
+# How to use
+## Using Docker
+```Shell
+docker-compose up -d
+```
+
+Then you can generate a knapset and solve it with the naive solver through the UI (your [http://localhost](http://localhost)).
 # Project Overview & Description
 The goal of this project is to create a Proof Of Concept (PoC) using different AWS services for a Knapsack greedy problem implementation.
 This implementation will follow an Microservices Event driven architecture to test simultaneously different types of algorithms implemented in different ways, languages and using different (AWS) technologies.
@@ -11,7 +18,9 @@ It will also use modern CI/CD technologies (see the full list below) to automati
 * Go (for problem generator service)
 * GitHub Actions (for CI/CD)
 * Python (for naive solver service) & Sanic (python web framework)
-* Docker (to containerize services)
+* Docker & Docker-compose (to containerize services)
+* VueJS (as UI MVP frontend)
+* NGINX (as web-proxy for Docker containers)
 * TBD
 
 # RoadMap
@@ -20,16 +29,8 @@ For a complete roadmap please refer to the [Project Tab](https://github.com/user
 - [x] Create a simple generator of knapsack problems (list of items + bag size)  
 - [x] Create a first simple MVP of a naive solver  
 - [x] Dockerize Generator and Naive Solver
-- [ ] Create a MVP with a UI to launch a complete flow (generate a new problem, send it to solver and print result)
+- [x] Create a MVP with a UI to launch a complete flow (generate a new problem, send it to solver and print result)
 - [ ] Implement a distributed Message Queue system to connect generator and solvers (Kafka, Red Panda, SQS?)
 - [ ] Create a second new MVP by implement an aggregator (if required) of chosen Queue/PubSub response/events to aggregate and display all results from all algorithms
 - [ ] Create few more services using different algorithms, and languages, to compare solution and time to completion
 - TBD
-
-# How to use
-## Using Docker
-```Shell
-docker-compose up -d
-```
-
-Then you can generate a knapset and solve it with the naive solver #TODO
