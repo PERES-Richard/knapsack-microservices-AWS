@@ -12,16 +12,20 @@ let displayGeneratedComp = ref(false)
 let solution = ref(undefined)
 let displaySolution = ref(false)
 
-function generatorUrl() {
-  return "http://localhost:8080/generate?bagSize=" + bagSize + "&numberOfItems=" + nbOfItems
+let generatorURL: string = "localhost/generator"
+let naiveSolverURL: string = "localhost/naive-solver"
+
+
+function getGeneratorURL() {
+  return "http://" + generatorURL + "/generate?bagSize=" + bagSize + "&numberOfItems=" + nbOfItems
 }
 
-function solveUrl() {
-  return "http://localhost:8081/solve"
+function getNaiveSolverURL() {
+  return "http://" + naiveSolverURL + "/solve"
 }
 
 async function generate() {
-  const response = await fetch(generatorUrl(), {
+  const response = await fetch(getGeneratorURL(), {
     method: 'POST',
     mode: "cors",
     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
@@ -38,7 +42,7 @@ async function generate() {
 }
 
 async function solve() {
-  const response = await fetch(solveUrl(), {
+  const response = await fetch(getNaiveSolverURL(), {
     method: 'POST',
     mode: "cors",
     headers: {'Content-Type': 'application/json'},
@@ -58,12 +62,24 @@ async function solve() {
   <div class="app">
     <div class="form">
       <div>
-        <p>Bag Size : {{ bagSize }}</p>
+        <p>Generator URL :</p>
+        <input v-model.number="generatorURL"/>
+      </div>
+      <br>
+      <div>
+        <p>Naive solver URL :</p>
+        <input v-model.number="naiveSolverURL"/>
+      </div>
+
+      <br><hr><br>
+
+      <div>
+        <p>Bag Size :</p>
         <input v-model.number="bagSize" placeholder="eg: 100"/>
       </div>
       <br>
       <div>
-        <p>Number of items : {{ nbOfItems }}</p>
+        <p>Number of items :</p>
         <input v-model.number="nbOfItems" placeholder="eg: 12"/>
       </div>
 

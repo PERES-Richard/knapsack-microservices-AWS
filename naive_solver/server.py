@@ -1,4 +1,5 @@
 import time
+from os import getenv
 
 from sanic import Sanic
 from sanic.response import json, text
@@ -11,13 +12,15 @@ from uuid6 import uuid7
 
 from solver.solver import bestPathFinder
 
+PORT=int(getenv("PORT"))
+
 app = Sanic(name='naive_solver')
 # Add OPTIONS handlers to any route that is missing it
 app.register_listener(setup_options, "before_server_start")
 
 # Fill in CORS headers
 app.register_middleware(add_cors_headers, "response")
-@app.route("/solve", ["POST"])
+@app.route("/naive-solver/solve", ["POST"])
 async def solve_handler(request):
     # Creates a UUID for the incominq req
     uid = uuid7()
@@ -40,9 +43,9 @@ async def solve_handler(request):
         "duration": end - start
     })
 
-@app.route("/health")
+@app.route("/naive-solver/health")
 async def solve_handler(request):
     return text("naive solver is healthy")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8081)
+    app.run(host="0.0.0.0", port=PORT)

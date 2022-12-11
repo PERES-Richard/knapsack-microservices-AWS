@@ -26,6 +26,7 @@ RUN groupadd -g 999 python && \
 RUN mkdir /usr/app && chown python:python /usr/app
 
 WORKDIR /usr/app
+ENV PORT=3000
 COPY --chown=python:python --from=build /usr/app/venv ./venv
 COPY --chown=python:python . .
 
@@ -37,4 +38,4 @@ EXPOSE 8081
 
 CMD [ "python3", "server.py" ]
 #CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker ", "--bind", "0.0.0.0:8081", "server:app" ] # doesnt work since Sanic is not a wsgi
-HEALTHCHECK --interval=2s --timeout=3s --start-period=2s --retries=3 CMD curl -f http://localhost:8081/health
+HEALTHCHECK --interval=2s --timeout=3s --start-period=2s --retries=3 CMD curl -f http://localhost:3000/health

@@ -11,11 +11,13 @@ import (
 	"strconv"
 )
 
+const PORT = "3000"
+
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/generate", generateNewBag).Queries("bagSize", "{bagSize:[0-9,]+}", "numberOfItems", "{numberOfItems:[0-9,]+}").Methods("POST")
+	r.HandleFunc("/generator/generate", generateNewBag).Queries("bagSize", "{bagSize:[0-9,]+}", "numberOfItems", "{numberOfItems:[0-9,]+}").Methods("POST")
 
-	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/generator/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "generator is healthy\n")
 	}).Methods("GET")
 
@@ -25,11 +27,11 @@ func main() {
 	})
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + PORT,
 		Handler: c.Handler(r),
 	}
 
-	println("Starting listening on port 8080...")
+	log.Printf("Starting listening on port %s ...\n", PORT)
 	log.Fatal(srv.ListenAndServe())
 }
 

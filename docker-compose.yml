@@ -5,28 +5,65 @@ services:
     build: ./knapset-generator
     image: ghcr.io/peres-richard/knapset-generator
     container_name: generator
-    ports:
-      - "8080:8080"
+    environment:
+      PORT: 3000
+    expose:
+      - 3000
     read_only: true
     cap_drop:
       - 'ALL'
+    networks:
+      - generator
 
   naive-solver:
     build: ./naive_solver
     image: ghcr.io/peres-richard/naive-solver
     container_name: naive-solver
-    ports:
-      - "8081:8081"
+    environment:
+      PORT: 3000
+    expose:
+      - 3000
     read_only: false
     cap_drop:
       - 'ALL'
+    networks:
+      - naive-solver
+
   frontend:
     build: ./frontend
     image: ghcr.io/peres-richard/knapset-ui
     container_name: knapset-ui
-    ports:
-      - "3000:3000"
-#    read_only: false
+    environment:
+      PORT: 3000
+    expose:
+      - 3000
+    read_only: false
     cap_drop:
       - 'ALL'
+    networks:
+      - frontend
+
+  nginx-proxy:
+    image: nginx:1.23-alpine
+    container_name: proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    user: nginx
+    read_only: false
+    cap_drop:
+      - 'ALL'
+    networks:
+      - frontend
+      - naive-solver
+      - generator
+
+volumes:
+  nginx-proxy:
+
+networks:
+  frontend:
+  naive-solver:
+  generator:
 
