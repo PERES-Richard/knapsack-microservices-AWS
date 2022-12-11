@@ -20,9 +20,20 @@ app.register_listener(setup_options, "before_server_start")
 
 # Fill in CORS headers
 app.register_middleware(add_cors_headers, "response")
-@app.route("/naive-solver/solve", ["POST"])
+
+
+def checkArgs(request):
+    if request.json["bagSize"] is None or request.json["items"] is None:
+        return False
+    return True
+
+
+@app.route("/naive-solver/solve", ['POST'])
 async def solve_handler(request):
-    # Creates a UUID for the incominq req
+    if not checkArgs(request):
+        return json({"Error": "Parameters are invalid.", "bagSize": request.json["bagSize"], "items": request.json["items"]}, status=400)
+
+    # Creates a UUID for the incoming req
     uid = uuid7()
 
     logger.info("New solve request id "+ str(uid) +" for a bagSize of : " + str(request.json["bagSize"]) + " and " + str(len(
@@ -44,8 +55,8 @@ async def solve_handler(request):
     })
 
 @app.route("/naive-solver/health")
-async def solve_handler(request):
+async def healthcheck_handler(request):
     return text("naive solver is healthy")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT, fast=True)
