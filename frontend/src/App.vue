@@ -11,6 +11,7 @@ let displayGeneratedComp = ref(false)
 
 let solution = ref(undefined)
 let displaySolution = ref(false)
+let loading = ref(false)
 
 let generatorURL: string = "localhost/generator"
 let naiveSolverURL: string = "localhost/naive-solver"
@@ -42,6 +43,7 @@ async function generate() {
 }
 
 async function solve() {
+  loading.value = true
   const response = await fetch(getNaiveSolverURL(), {
     method: 'POST',
     mode: "cors",
@@ -50,10 +52,11 @@ async function solve() {
   });
 
   if (!response.ok) {
-    alert("error while generating")
+    alert("error while solving")
   }
 
   solution.value = await response.json()
+  loading.value = false
   displaySolution.value = true
 }
 </script>
@@ -96,6 +99,17 @@ async function solve() {
       <vue-json-pretty :data=generatedKnapSac />
     </div>
 
+    <div class="solution" :class="{ 'display-none': !loading }">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#93dbe9" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+        </circle>
+        <circle cx="50" cy="50" r="23" stroke-width="8" stroke="#689cc5" stroke-dasharray="36.12831551628262 36.12831551628262" stroke-dashoffset="36.12831551628262" fill="none" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;-360 50 50"></animateTransform>
+        </circle>
+      </svg>
+    </div>
+
     <div class="solution" :class="{ 'display-none': !displaySolution }">
       <h2>Solution :</h2>
       <br>
@@ -109,7 +123,7 @@ async function solve() {
 .app {
   max-width: 70%;
   width: fit-content;
-  margin: 10% auto 0 auto;
+  margin: 2% auto 0 auto;
   padding: 2rem;
 
   font-weight: normal;
@@ -124,7 +138,7 @@ async function solve() {
 
 .sac {
   display: inline-block;
-  max-height: 600px;
+  max-height: 55em;
   overflow-y: auto;
   margin-right: 100px;
   padding-right: 25px;
@@ -133,7 +147,7 @@ async function solve() {
 
 .solution {
   display: inline-block;
-  max-height: 600px;
+  max-height: 55em;
   overflow-y: auto;
   margin-right: 50px;
   padding-right: 25px;
