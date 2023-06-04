@@ -2,11 +2,10 @@ import time
 from os import getenv
 
 from sanic import Sanic
+from sanic_ext import Extend
+
 from sanic.response import json, text
 from sanic.log import logger
-
-from cors import add_cors_headers
-from options import setup_options
 
 from uuid6 import uuid7
 
@@ -15,11 +14,8 @@ from solver.solver import bestPathFinder
 PORT=int(getenv("PORT"))
 
 app = Sanic(name='naive_solver')
-# Add OPTIONS handlers to any route that is missing it
-app.register_listener(setup_options, "before_server_start")
-
-# Fill in CORS headers
-app.register_middleware(add_cors_headers, "response")
+app.config.CORS_ORIGINS = "*"
+Extend(app)
 
 
 def checkArgs(request):
@@ -28,7 +24,7 @@ def checkArgs(request):
     return True
 
 
-@app.route("/naive-solver/solve", ['POST'])
+@app.post("/naive-solver/solve")
 async def solve_handler(request):
     if not checkArgs(request):
         return json({"Error": "Parameters are invalid.", "bagSize": request.json["bagSize"], "items": request.json["items"]}, status=400)
@@ -54,7 +50,7 @@ async def solve_handler(request):
         "duration": end - start
     })
 
-@app.route("/naive-solver/health")
+@app.get("/naive-solver/health")
 async def healthcheck_handler(request):
     return text("naive solver is healthy")
 
