@@ -33,4 +33,5 @@ For a complete roadmap please refer to the [Project Tab](https://github.com/user
 - [ ] Implement a distributed Message Queue system to connect generator and solvers (Kafka, Red Panda, SQS?)
 - [ ] Create a second new MVP by implement an aggregator (if required) of chosen Queue/PubSub response/events to aggregate and display all results from all algorithms
 - [ ] Create few more services using different algorithms, and languages, to compare solution and time to completion
+- [ ] Create a cache (cold and hot) system for already solved sacs and enable re-utilisation of already solved problems
 - TBD

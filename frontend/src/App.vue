@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import {ref} from "vue";
+import VueJsonPretty from 'vue-json-pretty';
+import NaiveSolver from "@/components/NaiveSolver.vue";
+
 
 let bagSize: number = 100
 let nbOfItems: number = 5
@@ -9,26 +11,17 @@ let nbOfItems: number = 5
 let generatedKnapSac = ref(undefined)
 let displayGeneratedComp = ref(false)
 
-let solution = ref(undefined)
-let displaySolution = ref(false)
-let loading = ref(false)
-
 let generatorURL: string = "localhost/generator"
-let naiveSolverURL: string = "localhost/naive-solver"
-
 
 function getGeneratorURL() {
   return "http://" + generatorURL + "/generate?bagSize=" + bagSize + "&numberOfItems=" + nbOfItems
-}
-
-function getNaiveSolverURL() {
-  return "http://" + naiveSolverURL + "/solve"
 }
 
 async function generate() {
   const response = await fetch(getGeneratorURL(), {
     method: 'POST',
     mode: "cors",
+    keepalive: true,
     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
   });
 
@@ -38,26 +31,6 @@ async function generate() {
 
   generatedKnapSac.value = await response.json()
   displayGeneratedComp.value = true
-  displaySolution.value = false
-
-}
-
-async function solve() {
-  loading.value = true
-  const response = await fetch(getNaiveSolverURL(), {
-    method: 'POST',
-    mode: "cors",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(generatedKnapSac.value)
-  });
-
-  if (!response.ok) {
-    alert("error while solving")
-  }
-
-  solution.value = await response.json()
-  loading.value = false
-  displaySolution.value = true
 }
 </script>
 
@@ -68,13 +41,10 @@ async function solve() {
         <p>Generator URL :</p>
         <input v-model.number="generatorURL"/>
       </div>
-      <br>
-      <div>
-        <p>Naive solver URL :</p>
-        <input v-model.number="naiveSolverURL"/>
-      </div>
 
-      <br><hr><br>
+      <br>
+      <hr>
+      <br>
 
       <div>
         <p>Bag Size :</p>
@@ -88,9 +58,6 @@ async function solve() {
 
       <br><br>
       <button @click="generate">Generate Knap Sac</button>
-
-      <br><br>
-      <button @click="solve">Solve Knap Sac</button>
     </div>
 
     <div class="sac" :class="{ 'display-none': !displayGeneratedComp }">
@@ -99,22 +66,8 @@ async function solve() {
       <vue-json-pretty :data=generatedKnapSac />
     </div>
 
-    <div class="solution" :class="{ 'display-none': !loading }">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#93dbe9" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-          <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-        </circle>
-        <circle cx="50" cy="50" r="23" stroke-width="8" stroke="#689cc5" stroke-dasharray="36.12831551628262 36.12831551628262" stroke-dashoffset="36.12831551628262" fill="none" stroke-linecap="round">
-          <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;-360 50 50"></animateTransform>
-        </circle>
-      </svg>
-    </div>
+    <NaiveSolver :generatedKnapSac=generatedKnapSac solver-name="Naive" />
 
-    <div class="solution" :class="{ 'display-none': !displaySolution }">
-      <h2>Solution :</h2>
-      <br>
-      <vue-json-pretty :data=solution />
-    </div>
   </div>
 
 </template>
@@ -131,10 +84,13 @@ async function solve() {
 
 .form {
   display: inline-block;
+
+  /* Right blue bar */
   margin-right: 50px;
   padding-right: 50px;
   border-right: 2px solid #2c3e50;
 }
+
 
 .sac {
   display: inline-block;
@@ -143,19 +99,6 @@ async function solve() {
   margin-right: 100px;
   padding-right: 25px;
   vertical-align: top;
-}
-
-.solution {
-  display: inline-block;
-  max-height: 55em;
-  overflow-y: auto;
-  margin-right: 50px;
-  padding-right: 25px;
-  vertical-align: top;
-}
-
-.display-none {
-  display: none;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
