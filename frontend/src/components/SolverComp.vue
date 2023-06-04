@@ -97,7 +97,6 @@ export default {
   display: inline-block;
   max-height: 55em;
   overflow-y: auto;
-  margin-right: 50px;
   padding-right: 25px;
   vertical-align: top;
 

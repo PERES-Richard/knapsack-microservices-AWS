@@ -2,8 +2,7 @@
 import 'vue-json-pretty/lib/styles.css';
 import {ref} from "vue";
 import VueJsonPretty from 'vue-json-pretty';
-import NaiveSolver from "@/components/NaiveSolver.vue";
-
+import Solver from "@/components/SolverComp.vue";
 
 let bagSize: number = 100
 let nbOfItems: number = 5
@@ -32,6 +31,9 @@ async function generate() {
   generatedKnapSac.value = await response.json()
   displayGeneratedComp.value = true
 }
+
+const solverList = ["Naive"]
+
 </script>
 
 <template>
@@ -66,7 +68,7 @@ async function generate() {
       <vue-json-pretty :data=generatedKnapSac />
     </div>
 
-    <NaiveSolver :generatedKnapSac=generatedKnapSac solver-name="Naive" />
+    <Solver :generatedKnapSac=generatedKnapSac v-for="solverName in solverList" :key="solverName" :solver-name=solverName />
 
   </div>
 
@@ -74,7 +76,7 @@ async function generate() {
 
 <style scoped>
 .app {
-  max-width: 70%;
+  max-width: 100%;
   width: fit-content;
   margin: 2% auto 0 auto;
   padding: 2rem;
@@ -96,7 +98,6 @@ async function generate() {
   display: inline-block;
   max-height: 55em;
   overflow-y: auto;
-  margin-right: 100px;
   padding-right: 25px;
   vertical-align: top;
 }
