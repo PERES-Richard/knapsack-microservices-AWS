@@ -29,6 +29,8 @@ async function generate() {
   }
 
   generatedKnapSac.value = await response.json()
+  console.log("Generated knapsack: ", generatedKnapSac.value)
+
   displayGeneratedComp.value = true
 }
 
@@ -38,7 +40,7 @@ const solverList = ["Naive"]
 
 <template>
   <div class="app">
-    <div class="form">
+    <div class="form" :class="{ 'blue-separator': displayGeneratedComp }">
       <div>
         <p>Generator URL :</p>
         <input v-model.number="generatorURL"/>
@@ -58,11 +60,10 @@ const solverList = ["Naive"]
         <input v-model.number="nbOfItems" placeholder="eg: 12"/>
       </div>
 
-      <br><br>
-      <button @click="generate">Generate Knap Sac</button>
+      <button @click="generate" id="generate-btn">Generate Knap Sac</button>
     </div>
 
-    <div class="sac" :class="{ 'display-none': !displayGeneratedComp }">
+    <div v-if="displayGeneratedComp" class="sac">
       <h2>Generated Sac :</h2>
       <br>
       <vue-json-pretty :data=generatedKnapSac />
@@ -86,13 +87,18 @@ const solverList = ["Naive"]
 
 .form {
   display: inline-block;
+}
 
+.blue-separator {
   /* Right blue bar */
   margin-right: 50px;
   padding-right: 50px;
   border-right: 2px solid #2c3e50;
 }
 
+#generate-btn {
+  margin-top: 15%;
+}
 
 .sac {
   display: inline-block;

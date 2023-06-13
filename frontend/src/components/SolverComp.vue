@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import VueJsonPretty from 'vue-json-pretty';
 import {ref} from "vue";
+import {KnapSackSolution} from "@/type/KnapSackSolutionType";
 
 let solution = ref(undefined)
 let loading = ref(false)
 let displaySolution = ref(false)
+
+let maxValue = ref(0)
+let durationTime = ref(0)
 
 const props = defineProps({
   generatedKnapSac: Object,
@@ -28,8 +32,14 @@ async function solve() {
     alert("error while solving")
   }
 
-  console.log(response)
   solution.value = await response.json()
+
+  console.log(props.solverName, " solution: ", solution.value)
+
+  const knapsackSolution: KnapSackSolution = solution.value as unknown as KnapSackSolution
+  maxValue.value = knapsackSolution.max_value
+  durationTime.value = knapsackSolution.duration
+
   loading.value = false
   displaySolution.value = true
 }
@@ -44,7 +54,7 @@ export default {
 </script>
 
 <template>
-  <div class="solution">
+  <div v-if="props.generatedKnapSac !== undefined"  class="solution">
     <h2>{{ solverName }} Solver :</h2>
     <br>
 
@@ -53,15 +63,11 @@ export default {
     <br>
     <br>
 
-    <button @click="solve">Solve Knap Sac</button>
+    <button id="solve-btn" @click="solve">Solve Knap Sac</button>
 
-    <br>
-    <br>
     <hr>
-    <br>
 
-
-    <div :class="{ 'display-none': !loading }">
+    <div v-if="loading">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
            style="margin: auto; display: block; shape-rendering: auto;" width="200px" height="200px"
            viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -79,7 +85,9 @@ export default {
       </svg>
     </div>
 
-    <div :class="{ 'display-none': !displaySolution && loading }">
+    <div v-if="displaySolution && !loading" id="solution">
+      <p>Solution max value: <span class="bold">{{ maxValue }}</span></p>
+      <p>Solution solving took: <span class="bold">{{ durationTime.toFixed(2) }}</span>s</p>
       <br>
       <vue-json-pretty :data=solution />
     </div>
@@ -89,8 +97,17 @@ export default {
 
 <style scoped>
 
-.display-none {
-  display: none;
+#solve-btn {
+  margin-bottom: 12%;
+}
+
+#solution {
+  margin-top: 12%;
+}
+
+.bold {
+  font-weight: bold !important;
+  color: aqua;
 }
 
 .solution {
