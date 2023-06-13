@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VueJsonPretty from 'vue-json-pretty';
 import {ref} from "vue";
-import {KnapSackSolution} from "@/type/KnapSackSolutionType";
+import type {KnapSackSolution} from "@/type/KnapSackSolutionType";
 
 let solution = ref(undefined)
 let loading = ref(false)
@@ -49,6 +49,7 @@ async function solve() {
 <script lang="ts">
 export default {
   name: "Solver",
+  // @ts-ignore
   props: ['generatedKnapSac', 'solverName', 'solverURL']
 }
 </script>
