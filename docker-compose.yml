@@ -12,6 +12,12 @@ services:
     read_only: true
     cap_drop:
       - 'ALL'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/generator/health" ]
+      interval: 90s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
     networks:
       - generator
 
@@ -26,8 +32,32 @@ services:
     read_only: false
     cap_drop:
       - 'ALL'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/naive-solver/health" ]
+      interval: 90s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
     networks:
       - naive-solver
+
+  average-solver:
+    build: ./average_solver
+    image: ghcr.io/peres-richard/average-solver
+    container_name: average-solver
+    expose:
+      - 3000
+    read_only: false
+    cap_drop:
+      - 'ALL'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/average-solver/health" ]
+      interval: 90s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - average-solver
 
   frontend:
     build: ./frontend
@@ -40,6 +70,12 @@ services:
     read_only: false
     cap_drop:
       - 'ALL'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/" ]
+      interval: 90s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
     networks:
       - frontend
 
@@ -57,6 +93,7 @@ services:
     networks:
       - frontend
       - naive-solver
+      - average-solver
       - generator
 
 volumes:
@@ -65,5 +102,6 @@ volumes:
 networks:
   frontend:
   naive-solver:
+  average-solver:
   generator:
 

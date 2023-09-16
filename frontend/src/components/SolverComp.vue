@@ -23,7 +23,7 @@ async function solve() {
   const response = await fetch("http://" + solverURL, {
     method: 'POST',
     mode: "cors",
-    keepalive: true,
+    keepalive: false,
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(props.generatedKnapSac)
   });
@@ -34,7 +34,7 @@ async function solve() {
 
   solution.value = await response.json()
 
-  console.log(props.solverName, " solution: ", solution.value)
+  console.log(props.solverName, "solver solution: ", solution.value)
 
   const knapsackSolution: KnapSackSolution = solution.value as unknown as KnapSackSolution
   maxValue.value = knapsackSolution.max_value

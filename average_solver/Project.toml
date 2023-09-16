@@ -1,10 +1,15 @@
 name = "AverageSolver"
-uuid = "a55bf80f-ce7e-4daf-be96-1a1479e4f116"
-authors = ["PERES-Richard <richardperes.info@gmail.com>"]
-version = "0.1.0"
+uuid = "9b38d312-b79a-46a3-8af5-4d99ec587b6d"
+authors = ["PERES-Richard <richard.peres@orange.com>"]
+version = "1.0.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
 Inflector = "6d011eab-0732-4556-8808-e463c76bf3b6"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"

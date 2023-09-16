@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-const MAX_DEFAULT_BAG_SIZE = 100
-const MAX_DEFAULT_NB_ITEM = 100
-const MAX_ITEM_VALUE = 100
-const MAX_ITEM_SIZE = 100
+const MAX_DEFAULT_BAG_SIZE = 500
+const MAX_DEFAULT_NB_ITEM = 25
+const MAX_ITEM_VALUE = 1000
+const MAX_ITEM_SIZE = 500
 
 func GenerateNewKnapSet(bagSize int, nbItem int) (KnapSet, error) {
 	if bagSize < 0 || nbItem < 0 {

@@ -4,8 +4,11 @@ import {ref} from "vue";
 import VueJsonPretty from 'vue-json-pretty';
 import Solver from "@/components/SolverComp.vue";
 
-let bagSize: number = 100
-let nbOfItems: number = 5
+const DEFAULT_BAGSIZE: number = 1000
+const DEFAULT_NB_ITEMS: number = 43
+
+let bagSize: number = DEFAULT_BAGSIZE
+let nbOfItems: number = DEFAULT_NB_ITEMS
 
 let generatedKnapSac = ref(undefined)
 let displayGeneratedComp = ref(false)
@@ -34,7 +37,7 @@ async function generate() {
   displayGeneratedComp.value = true
 }
 
-const solverList = ["Naive"]
+const solverList = ["Naive", "Average"]
 
 </script>
 

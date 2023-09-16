@@ -3,7 +3,7 @@
 ## Run with Docker
 
 Build the image with : ``docker build -t naive-solver .``  
-Run the image with : ``docker run --name naive-solver -p 8081:8081 -d naive-solver``
+Run the image with : ``docker run --name naive-solver -p 3000:3000 -d naive-solver``
 
 ## Run locally
 
@@ -16,12 +16,50 @@ python3 server.py
 
 # Use Server
 
-Send a formatted JSON 'knapset' at ``/solve`` route, example :
+Send a formatted JSON 'knapset' (see an example below) at ``/naive-solver/solve`` route, example :
 
 ```Shell
-curl -X POST "localhost:8081/solve" -d @data.json
+curl -X POST -H "Content-Type: application/json" "localhost:3000/naive-solver/solve" -d @data.json
 ```
  
+## Knapset template example
+```Json
+{
+  "bagSize": 50,
+  "items":
+  [{
+      "id": 0,
+      "size": 64,
+      "value": 78
+    },
+    {
+      "id": 1,
+      "size": 35,
+      "value": 87
+    },
+    {
+      "id": 2,
+      "size": 76,
+      "value": 53
+    }]
+}
+```
+
+## Response template example
+```Json
+{
+  "max_value": 87,
+  "items": [
+    {
+      "id": 1,
+      "size": 34,
+      "value": 87
+    }
+  ],
+  "duration": 0.006
+}
+```
+
 # Algorithm description
 
 Just a naive brute force solver of Knap problem. 
